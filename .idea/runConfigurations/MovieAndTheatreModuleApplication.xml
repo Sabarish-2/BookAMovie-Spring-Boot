@@ -1,0 +1,15 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="MovieAndTheatreModuleApplication" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="com.moviebookingapp.movie_and_theatre_module.MovieAndTheatreModuleApplication" />
+    <module name="movie-and-theatre-module" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="com.moviebookingapp.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
