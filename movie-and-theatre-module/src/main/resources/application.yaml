@@ -17,3 +17,15 @@ spring:
     session:
         jdbc:
             initialize-schema: always
+    messages: # Instead of validation Configuration
+        basename: error
+        encoding: UTF-8
+        fallback-to-system-locale: false
+
+springdoc:
+    apiDocs:
+        enabled: true
+#        path: /v3/api  -docs?
+    swaggerUi:
+        enabled: true
+#        path: /swagger-ui.html
