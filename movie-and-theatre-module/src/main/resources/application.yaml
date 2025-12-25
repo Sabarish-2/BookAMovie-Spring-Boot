@@ -1,3 +1,16 @@
+server:
+    port: 8082
+
 spring:
-  application:
-    name: movie-and-theatre-module
+    application:
+        name: Movie-And-Theatre-Module
+    datasource:
+        driverClassName: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/Movie_DB?createDatabaseIfNotExist=true
+        username: root
+        password: pass@word1
+    jpa:
+#        database-platform: org.hibernate.dialect.MySQL8Dialect
+        hibernate:
+            ddl-auto: update # Automatically updates the database schema based on entities
+        show-sql: true # Logs SQL queries to the console
