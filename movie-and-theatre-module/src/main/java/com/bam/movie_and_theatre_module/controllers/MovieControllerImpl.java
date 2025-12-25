@@ -1,6 +1,6 @@
-package com.bam.movie_and_theatre_module.controller;
+package com.bam.movie_and_theatre_module.controllers;
 
-import com.bam.movie_and_theatre_module.repository.MovieRepository;
+import com.bam.movie_and_theatre_module.repositories.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.bam.movie_and_theatre_module;
+package com.bam.movie_and_theatre_module.enums;
 
 public enum MovieStatus {
     AVAILABLE,

@@ -10,7 +10,10 @@ spring:
         username: root
         password: pass@word1
     jpa:
-#        database-platform: org.hibernate.dialect.MySQL8Dialect
+        #        database-platform: org.hibernate.dialect.MySQL8Dialect
         hibernate:
             ddl-auto: update # Automatically updates the database schema based on entities
         show-sql: true # Logs SQL queries to the console
+    session:
+        jdbc:
+            initialize-schema: always

@@ -1,4 +1,4 @@
-package com.bam.movie_and_theatre_module.entity;
+package com.bam.movie_and_theatre_module.entities;
 
 import jakarta.persistence.Embeddable;
 import lombok.Getter;

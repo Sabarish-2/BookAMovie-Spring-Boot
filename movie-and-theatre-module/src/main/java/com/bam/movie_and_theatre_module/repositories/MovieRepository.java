@@ -1,7 +1,7 @@
-package com.bam.movie_and_theatre_module.repository;
+package com.bam.movie_and_theatre_module.repositories;
 
-import com.bam.movie_and_theatre_module.entity.Movie;
-import com.bam.movie_and_theatre_module.entity.MovieAndTheater;
+import com.bam.movie_and_theatre_module.entities.Movie;
+import com.bam.movie_and_theatre_module.entities.MovieAndTheater;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,6 +1,6 @@
-package com.bam.movie_and_theatre_module.entity;
+package com.bam.movie_and_theatre_module.entities;
 
-import com.bam.movie_and_theatre_module.MovieStatus;
+import com.bam.movie_and_theatre_module.enums.MovieStatus;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
