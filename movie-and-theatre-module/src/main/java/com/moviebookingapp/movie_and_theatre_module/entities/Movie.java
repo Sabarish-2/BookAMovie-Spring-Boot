@@ -7,10 +7,12 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Movie {
 
     @EmbeddedId
@@ -21,10 +23,6 @@ public class Movie {
     @Enumerated(EnumType.STRING)
     private MovieStatus adminOverrideStatus;
 
-//    Might be erroneous
-    public Movie() {
-        this.movieAndTheatre = new MovieAndTheater();
-    }
 
     public Movie(MovieAndTheater movieAndTheatre, int ticketsAllotted) {
         this.ticketsAllotted = ticketsAllotted;

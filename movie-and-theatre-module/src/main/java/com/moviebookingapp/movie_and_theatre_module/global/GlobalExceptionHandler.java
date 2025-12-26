@@ -28,15 +28,15 @@ public class GlobalExceptionHandler {
         return buildResponse(HttpStatus.NOT_ACCEPTABLE, errors, request);
     }
 
-//    @ExceptionHandler(CustomException.class)
-//    public ResponseEntity<ErrorResponseJSON> handleCustomExceptions(CustomException ex, WebRequest request) {
-//        return buildResponse(ex.getStatus(), ex.getMessage(), request);
+//    @ExceptionHandler({MovieNotFoundException.class})
+//    public ResponseEntity<ErrorResponseRecord> handleCustomExceptions(MovieNotFoundException ex, WebRequest request) {
+//        return buildResponse(HttpStatus.OK, ex.getMessage(), request);
 //    }
 
     // 3. Catch-all for any other RuntimeExceptions
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseRecord> handleGlobal(Exception ex, WebRequest request) {
-        return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred", request);
+        return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Exact error: " + ex, request);
     }
 
     private ResponseEntity<ErrorResponseRecord> buildResponse(HttpStatus status, String message, WebRequest request) {

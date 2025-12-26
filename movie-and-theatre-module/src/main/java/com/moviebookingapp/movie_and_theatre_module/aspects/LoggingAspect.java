@@ -13,20 +13,20 @@ import org.springframework.stereotype.Component;
 @Component
 public class LoggingAspect {
 
-    @Before("execution (* com.moviebookingapp.*.*.*(..))")
+    @Before("execution (* com.moviebookingapp.*.*.*.*(..))")
     public void beforeMethod(JoinPoint joinPoint) {
-        log.info("Executing Method: {} . {}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
+        log.info("Executing Method: {}->{}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
     }
-    @AfterReturning("execution (* com.moviebookingapp.*.*.*(..))")
+    @AfterReturning(value = "execution (* com.moviebookingapp.*.*.*.*(..))", returning = "result")
     public void afterReturningMethod(JoinPoint joinPoint, Object result) {
-        log.info("Method Execution Successful: {} . {}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
+        log.info("Method Execution Successful: {}->{}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
         if (result != null && result.toString().length() < 1000) {
             log.info("Method Result: {}", result);
         }
     }
-    @AfterThrowing("execution (* com.moviebookingapp.*.*.*(..))")
-    public void afterThrowingMethod(JoinPoint joinPoint, Error error) {
-        log.error("Error in Method: {} . {}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
+    @AfterThrowing(value = "execution (* com.moviebookingapp.*.*.*.*(..))", throwing = "error")
+    public void afterThrowingMethod(JoinPoint joinPoint, Exception error) {
+        log.error("Error in Method: {}->{}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
         log.error(error.getMessage());
     }
 
