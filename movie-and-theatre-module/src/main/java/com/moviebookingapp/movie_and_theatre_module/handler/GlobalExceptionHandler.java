@@ -1,6 +1,7 @@
 package com.moviebookingapp.movie_and_theatre_module.handler;
 
 import com.moviebookingapp.movie_and_theatre_module.exception.CustomException;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -15,13 +16,13 @@ public class GlobalExceptionHandler {
 
 
     // Handle Validation Errors
-    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public List<String> handleValidation(MethodArgumentNotValidException ex) {
         return ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
-                .map(f -> f.getField() + ": " + f.getDefaultMessage())
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .toList();
     }
 
