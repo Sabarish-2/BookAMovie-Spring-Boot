@@ -3,7 +3,7 @@ package com.moviebookingapp.movie_and_theatre_module.services;
 import com.moviebookingapp.movie_and_theatre_module.dtos.MovieDTO;
 import com.moviebookingapp.movie_and_theatre_module.entities.Movie;
 import com.moviebookingapp.movie_and_theatre_module.entities.MovieAndTheater;
-import com.moviebookingapp.movie_and_theatre_module.exceptions.MovieNotFoundException;
+import com.moviebookingapp.movie_and_theatre_module.exception.MovieNotFoundException;
 import com.moviebookingapp.movie_and_theatre_module.mappers.MovieMapper;
 import com.moviebookingapp.movie_and_theatre_module.repositories.MovieRepository;
 import org.junit.jupiter.api.DisplayName;

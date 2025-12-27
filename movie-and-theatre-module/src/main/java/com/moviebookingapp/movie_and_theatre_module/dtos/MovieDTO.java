@@ -3,11 +3,13 @@ package com.moviebookingapp.movie_and_theatre_module.dtos;
 import com.moviebookingapp.movie_and_theatre_module.enums.MovieStatus;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class MovieDTO {
 
     @NotBlank(message = "{com.moviebookingapp.movie_and_theatre_module.dtos.movieName.invalid}")
@@ -16,7 +18,7 @@ public class MovieDTO {
     @NotBlank(message = "{com.moviebookingapp.movie_and_theatre_module.dtos.theatreName.invalid}")
     private String theatreName;
 
-    @Min(value = 0L, message = "{com.moviebookingapp.movie_and_theatre_module.dtos.ticketsAllotted.zero}")
+    @Min(value = 1L, message = "{com.moviebookingapp.movie_and_theatre_module.dtos.ticketsAllotted.invalid}")
     private int ticketsAllotted;
 
     private Integer ticketsAvailable;
