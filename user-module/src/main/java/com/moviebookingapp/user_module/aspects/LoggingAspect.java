@@ -1,0 +1,33 @@
+package com.moviebookingapp.user_module.aspects;
+
+import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.springframework.stereotype.Component;
+
+@Slf4j
+@Aspect
+@Component
+public class LoggingAspect {
+
+    @Before("execution (* com.moviebookingapp.*.*.*.*(..))")
+    public void beforeMethod(JoinPoint joinPoint) {
+        log.info("Executing Method: {}->{}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
+    }
+    @AfterReturning(value = "execution (* com.moviebookingapp.*.*.*.*(..))", returning = "result")
+    public void afterReturningMethod(JoinPoint joinPoint, Object result) {
+        log.info("Method Execution Successful: {}->{}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
+        if (result != null && result.toString().length() < 1000) {
+            log.info("Method Result: {}", result);
+        }
+    }
+    @AfterThrowing(value = "execution (* com.moviebookingapp.*.*.*.*(..))", throwing = "error")
+    public void afterThrowingMethod(JoinPoint joinPoint, Exception error) {
+        log.error("Error in Method: {}->{}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
+        log.error(error.getMessage());
+    }
+
+}
