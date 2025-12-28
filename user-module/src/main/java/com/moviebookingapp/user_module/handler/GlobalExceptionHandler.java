@@ -1,6 +1,5 @@
 package com.moviebookingapp.user_module.handler;
 
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -20,7 +19,7 @@ public class GlobalExceptionHandler {
         return ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
-                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .map(f -> f.getField() + ": " + f.getDefaultMessage())
                 .toList();
     }
 
