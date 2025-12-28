@@ -1,0 +1,40 @@
+spring:
+    application:
+        name: user-module
+    datasource:
+        driverClassName: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/Movie_DB?createDatabaseIfNotExist=true
+        username: root
+        password: pass@word1
+    jpa:
+        #        database-platform: org.hibernate.dialect.MySQL8Dialect
+        hibernate:
+            ddl-auto: update # Automatically updates the database schema based on entities
+        show-sql: true # Logs SQL queries to the console
+    session:
+        jdbc:
+            initialize-schema: always
+    messages: # Instead of validation Configuration
+        basename: error
+        encoding: UTF-8
+        fallback-to-system-locale: false
+
+
+server:
+    port: 8081
+
+springdoc:
+    openapi:
+        info:
+            title: User Module
+            description: REST API Handling User Module
+            version: v1.0
+    apiDocs:
+        enabled: true
+    swaggerUi:
+        enabled: true
+
+#eureka:
+#    client:
+#        service_url:
+#            defaultZone: http://localhost:8761/eureka
