@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1.0/moviebooking/movies")
+//@RequestMapping("/api/v1.0/moviebooking/movies")
 public class MovieControllerImpl implements MovieController {
 
     private MovieService movieService;
@@ -22,7 +22,7 @@ public class MovieControllerImpl implements MovieController {
     }
 
     @Override
-    @GetMapping("all")
+    @GetMapping("/all")
     public ResponseEntity<List<MovieDTO>> viewAllMovies() {
         return new ResponseEntity<>(movieService.getAllMovies(), HttpStatus.OK);
     }

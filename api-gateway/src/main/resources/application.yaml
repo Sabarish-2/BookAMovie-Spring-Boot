@@ -1,0 +1,31 @@
+spring:
+    #    main:
+    #        web-application-type: reactive
+    application:
+        name: api-gateway
+    cloud:
+        gateway:
+            server:
+                webmvc:
+                    routes:
+                        -   id: movie-and-theatre-module
+                            uri: lb://MOVIE-AND-THEATRE-MODULE # MOVIE-AND-THEATRE-MODULE
+                            predicates:
+                                - Path=/api/v1.0/moviebooking/movies/**
+                            filters:
+                                - StripPrefix=4
+#            globalcors:
+#                cors-configurations:
+#                    '[/**]':
+server:
+    port: 8090
+
+management:
+    endpoints:
+        web:
+            exposure:
+                include: "*"
+eureka:
+    client:
+        serviceUrl:
+            defaultZone: http://localhost:8761/eureka

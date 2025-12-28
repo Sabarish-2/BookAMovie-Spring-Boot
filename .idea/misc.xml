@@ -6,6 +6,8 @@
       <list>
         <option value="$PROJECT_DIR$/tickets-module/pom.xml" />
         <option value="$PROJECT_DIR$/movie-and-theatre-module/pom.xml" />
+        <option value="$PROJECT_DIR$/eureka-server/pom.xml" />
+        <option value="$PROJECT_DIR$/api-gateway/pom.xml" />
       </list>
     </option>
   </component>
