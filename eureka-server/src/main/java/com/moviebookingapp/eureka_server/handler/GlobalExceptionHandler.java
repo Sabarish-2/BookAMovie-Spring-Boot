@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String handleOtherExceptions(Exception ex) {
-        return "Exact Error in API: " + ex;
+        return "Exact Error in Eureka: " + ex;
     }
 
 }

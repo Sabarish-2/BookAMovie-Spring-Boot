@@ -2,6 +2,7 @@ package com.moviebookingapp.api_gateway.configurations;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -27,8 +28,8 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                                 .requestMatchers(
                                 "/api/v1.0/moviebooking/login", "/api/v1.0/moviebooking/register", "/api/v1.0/moviebooking/*/forgot").permitAll()
-//                                .requestMatchers(HttpMethod.GET,
-//                                "/api/v1.0/moviebooking/movies/all", "/api/v1.0/moviebooking/movies/search").permitAll()
+                                .requestMatchers(HttpMethod.GET,
+                                "/api/v1.0/moviebooking/movies/all", "/api/v1.0/moviebooking/movies/search").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
