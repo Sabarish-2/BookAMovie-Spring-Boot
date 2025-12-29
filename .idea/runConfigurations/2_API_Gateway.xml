@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="API Gateway" type="Application" factoryName="Application">
+  <configuration default="false" name="2.API Gateway" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="com.moviebookingapp.api_gateway.ApiGatewayApplication" />
     <module name="api-gateway" />
     <method v="2">

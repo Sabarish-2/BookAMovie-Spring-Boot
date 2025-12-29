@@ -1,4 +1,4 @@
-package handler;
+package com.moviebookingapp.eureka_server.handler;
 
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;

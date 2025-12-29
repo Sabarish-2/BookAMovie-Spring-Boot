@@ -1,4 +1,4 @@
-package handler;
+package com.moviebookingapp.api_gateway.handler;
 
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
@@ -38,4 +38,3 @@ public class GlobalExceptionHandler {
     }
 
 }
-

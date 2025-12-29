@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="TicketsModuleApplication" type="Application" factoryName="Application">
-    <option name="MAIN_CLASS_NAME" value="com.moviebookingapp.tickets_module.TicketsModuleApplication" />
-    <module name="tickets-module" />
+  <configuration default="false" name="4.MovieAndTheatreModuleApplication" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="com.moviebookingapp.movie_and_theatre_module.MovieAndTheatreModuleApplication" />
+    <module name="movie-and-theatre-module" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="com.moviebookingapp.*" />

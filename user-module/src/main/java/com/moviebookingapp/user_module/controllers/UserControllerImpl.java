@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 public class UserControllerImpl implements UserController {
@@ -54,7 +55,7 @@ public class UserControllerImpl implements UserController {
         );
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-        return jwtUtil.generateToken(userDetails.getUsername(), userDetails.getAuthorities().iterator().next().getAuthority());
+        return jwtUtil.generateToken(Objects.requireNonNull(userDetails).getUsername(), userDetails.getAuthorities().iterator().next().getAuthority());
     }
 
     @Override
