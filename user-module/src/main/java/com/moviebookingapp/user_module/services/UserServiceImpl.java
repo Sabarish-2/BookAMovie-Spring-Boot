@@ -4,26 +4,33 @@ import com.moviebookingapp.user_module.dtos.UserDTO;
 import com.moviebookingapp.user_module.entities.User;
 import com.moviebookingapp.user_module.mappers.UserMapper;
 import com.moviebookingapp.user_module.repositories.UserRepository;
-import org.jspecify.annotations.NonNull;
+import com.moviebookingapp.user_module.security.JWTUtil;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
-public class UserServiceImpl implements UserService, UserDetailsService {
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper mapper;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JWTUtil jwtUtil;
 
-    public UserServiceImpl(UserRepository userRepository, UserMapper mapper, PasswordEncoder passwordEncoder) {
+
+    public UserServiceImpl(UserRepository userRepository, UserMapper mapper, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
         this.userRepository = userRepository;
         this.mapper = mapper;
         this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
     }
 
 
@@ -37,10 +44,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-//    TODO
-    public UserDTO loginUser(String loginInput, String password) {
-//        TODO: Not Found Chk n Exception
-        return null;
+    public String loginUser(String loginInput, String password) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginInput, password)
+        );
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+        return jwtUtil.generateToken(Objects.requireNonNull(userDetails).getUsername(), userDetails.getAuthorities().iterator().next().getAuthority());
     }
 
     @Override
@@ -62,15 +72,4 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userRepository.deleteById(loginID);
     }
 
-    @NonNull
-    @Override
-    public UserDetails loadUserByUsername(@NonNull String username) throws UsernameNotFoundException {
-        User user = userRepository.findByEmailIDOrLoginID(username, username).orElseThrow(() -> new UsernameNotFoundException("User with ID: " + username + " Not Found"));
-
-        return org.springframework.security.core.userdetails.User
-                .withUsername(user.getLoginID())
-                .password(user.getPassword())
-                .authorities(String.valueOf(user.getUserRole()))
-                .build();
-    }
 }

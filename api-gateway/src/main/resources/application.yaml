@@ -27,7 +27,7 @@ spring:
 #                            filters:
 #                                - StripPrefix=4
 #            globalcors:
-#                cors-configurations:
+#                cors-security:
 #                    '[/**]':
 server:
     port: 8090

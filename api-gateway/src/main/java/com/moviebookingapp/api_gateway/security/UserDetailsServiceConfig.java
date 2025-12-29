@@ -1,4 +1,4 @@
-package com.moviebookingapp.api_gateway.configurations;
+package com.moviebookingapp.api_gateway.security;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

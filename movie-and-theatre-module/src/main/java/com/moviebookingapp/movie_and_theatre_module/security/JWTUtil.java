@@ -1,4 +1,4 @@
-package com.moviebookingapp.api_gateway.configurations;
+package com.moviebookingapp.movie_and_theatre_module.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -9,13 +9,6 @@ import org.springframework.stereotype.Component;
 public class JWTUtil {
 
     private final String SECRET_KEY = "Very Secret key - To Be Changed Later!..&^%&^*&*";
-
-    public String extractLoginID(String token) {
-        return extractAllClaims(token).getSubject();
-    }
-    public String extractRole(String token) {
-        return extractAllClaims(token).get("role", String.class);
-    }
 
     public Claims extractAllClaims(String token) {
         return Jwts.parser()

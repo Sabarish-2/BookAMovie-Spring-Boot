@@ -1,4 +1,4 @@
-package com.moviebookingapp.user_module.configurations;
+package com.moviebookingapp.user_module.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -22,18 +22,7 @@ public class JWTUtil {
                 .compact();
     }
 
-    public String extractLoginID(String token) {
-        return getClaims(token).getSubject();
-    }
-    public String extractRole(String token) {
-        return getClaims(token).get("role", String.class);
-    }
-    public boolean validateToken(String token) {
-        getClaims(token);
-        return true;
-    }
-
-    private Claims getClaims(String token) {
+    public Claims getClaims(String token) {
         return Jwts.parser()
                 .verifyWith(Keys.hmacShaKeyFor(SECRET_KEY.getBytes()))
                 .build()

@@ -1,4 +1,4 @@
-package com.moviebookingapp.api_gateway.configurations;
+package com.moviebookingapp.api_gateway.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,14 +14,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfiguration {
 
-    private final JWTFilter jwtFilter;
-
-    public SecurityConfiguration(JWTFilter jwtFilter) {
-        this.jwtFilter = jwtFilter;
-    }
-
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) {
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity, JWTFilter jwtFilter) {
 
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
@@ -35,6 +29,17 @@ public class SecurityConfiguration {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         httpSecurity.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
+        httpSecurity.exceptionHandling(ex -> ex
+                .authenticationEntryPoint((request, response, authException) -> {
+                    response.setStatus(401);
+                    response.setContentType("application/json");
+                    response.getWriter().write("{\"message\": \"Authentication Required\", \"reason\": " + authException.getMessage() + "}");
+        })  .accessDeniedHandler((request, response, accessDeniedException) -> {
+                    response.setStatus(403);
+                    response.setContentType("application/json");
+                    response.getWriter().write("{\"message\": \"You Are Not Supposed To Be Accessing This!!\", \"reason\": " + accessDeniedException.getMessage() + "}");
+        }));
 
         return httpSecurity.build();
     }

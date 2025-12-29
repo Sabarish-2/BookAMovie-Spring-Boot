@@ -1,6 +1,5 @@
 package com.moviebookingapp.user_module.controllers;
 
-import com.moviebookingapp.user_module.configurations.JWTUtil;
 import com.moviebookingapp.user_module.dtos.UserDTO;
 import com.moviebookingapp.user_module.dtos.UserLoginDTO;
 import com.moviebookingapp.user_module.dtos.UserResetDTO;
@@ -8,35 +7,19 @@ import com.moviebookingapp.user_module.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 public class UserControllerImpl implements UserController {
 
     private UserService userService;
-    private AuthenticationManager authenticationManager;
-    private JWTUtil jwtUtil;
 
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
-    }
-
-    @Autowired
-    public void setJwtUtil(JWTUtil jwtUtil) {
-        this.jwtUtil = jwtUtil;
-    }
-
-    @Autowired
-    public void setAuthenticationManager(AuthenticationManager authenticationManager) {
-        this.authenticationManager = authenticationManager;
     }
 
     @Override
@@ -48,14 +31,7 @@ public class UserControllerImpl implements UserController {
     @Override
     @GetMapping("/login")
     public String loginUser(@RequestBody UserLoginDTO userLoginDTO) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        userLoginDTO.getLoginID(), userLoginDTO.getPassword()
-                )
-        );
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-
-        return jwtUtil.generateToken(Objects.requireNonNull(userDetails).getUsername(), userDetails.getAuthorities().iterator().next().getAuthority());
+        return userService.loginUser(userLoginDTO.getLoginID(), userLoginDTO.getPassword());
     }
 
     @Override
@@ -77,6 +53,7 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
+    @PreAuthorize("hasRole(\"ADMIN\")")
     @DeleteMapping("/delete")
     public ResponseEntity<String> deleteUser(String loginID) {
         userService.deleteUser(loginID);

@@ -1,20 +1,16 @@
-package com.moviebookingapp.api_gateway.configurations;
+package com.moviebookingapp.api_gateway.security;
 
-import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.List;
 
 @Component
 public class JWTFilter extends OncePerRequestFilter {
@@ -34,15 +30,8 @@ public class JWTFilter extends OncePerRequestFilter {
         String token = authHeader.substring(7);
 
         try {
-            Claims claims = jwtUtil.extractAllClaims(token);
-            String loginID = claims.getSubject();
-            String role = claims.get("role", String.class);
-
-            List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_" + role));
-
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginID, null, authorities);
-
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            jwtUtil.validateToken(token);
+            SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken("API Authenticated!", null, null));
 
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

@@ -1,4 +1,4 @@
-package com.moviebookingapp.user_module.configurations;
+package com.moviebookingapp.user_module.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,5 +11,4 @@ public class PasswordEncoderConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }
