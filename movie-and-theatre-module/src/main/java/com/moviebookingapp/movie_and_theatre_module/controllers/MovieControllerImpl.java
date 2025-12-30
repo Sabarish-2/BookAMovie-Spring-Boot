@@ -6,6 +6,7 @@ import com.moviebookingapp.movie_and_theatre_module.services.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,11 +30,13 @@ public class MovieControllerImpl implements MovieController {
 
     @Override
     @PostMapping("create")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<MovieDTO> createMovie(MovieDTO movieDTO) {
         return new ResponseEntity<>(movieService.addMovie(movieDTO), HttpStatus.CREATED);
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("{movieName}/update/{theatreName}")
     public ResponseEntity<MovieDTO> updateMovie(String movieName, String theatreName, UpdateMovieDTO updateMovieDTO) {
         return ResponseEntity.ok(movieService.updateMovie(movieName, theatreName, updateMovieDTO));
@@ -46,6 +49,7 @@ public class MovieControllerImpl implements MovieController {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("{movieName}/delete/{theatreName}")
     public ResponseEntity<String> deleteMovie(String movieName, String theatreName) {
         movieService.deleteMovie(movieName, theatreName);

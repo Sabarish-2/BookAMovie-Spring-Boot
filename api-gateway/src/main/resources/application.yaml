@@ -9,13 +9,25 @@ spring:
                 webmvc:
                     routes:
                         -   id: movie-and-theatre-module
-                            uri: lb://MOVIE-AND-THEATRE-MODULE # MOVIE-AND-THEATRE-MODULE
+                            uri: lb://MOVIE-AND-THEATRE-MODULE
                             predicates:
                                 - Path=/api/v1.0/moviebooking/movies/**
                             filters:
                                 - StripPrefix=4
+                        -   id: user-module
+                            uri: lb://USER-MODULE
+                            predicates:
+                                - Path=/api/v1.0/moviebooking/register, /api/v1.0/moviebooking/login, /api/v1.0/moviebooking/*/forgot, /api/v1.0/moviebooking/all
+                            filters:
+                                - StripPrefix=3
+#                        -   id: tickets-module
+#                            uri: lb://TICKETS-MODULE
+#                            predicates:
+#                                - Path=/api/v1.0/moviebooking/tickets/**
+#                            filters:
+#                                - StripPrefix=4
 #            globalcors:
-#                cors-configurations:
+#                cors-security:
 #                    '[/**]':
 server:
     port: 8090

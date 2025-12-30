@@ -17,7 +17,7 @@ spring:
     session:
         jdbc:
             initialize-schema: always
-    messages: # Instead of validation Configuration
+    messages: # Use My Properties file: error.property
         basename: error
         encoding: UTF-8
         fallback-to-system-locale: false
@@ -28,6 +28,11 @@ eureka:
             defaultZone: http://localhost:8761/eureka
 
 springdoc:
+    openapi:
+        info:
+            title: Movie REST API Documentation
+            description: This is the REST API Documentation for the Movie and Theatre Module
+            version: v1.0
     apiDocs:
         enabled: true
 #        path: /v3/api  -docs?

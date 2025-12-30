@@ -4,6 +4,7 @@ import com.moviebookingapp.movie_and_theatre_module.exception.CustomException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -26,6 +27,17 @@ public class GlobalExceptionHandler {
                 .toList();
     }
 
+//    // Handle Authorization Errors
+//    @ExceptionHandler(AuthorizationDeniedException.class)
+//    public ResponseEntity<String> handleAuthenticationExceptions(AuthorizationDeniedException ex) {
+//        return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
+//    }
+
+    // Handle Authorization Errors
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ResponseEntity<String> handleAuthorizationExceptions(AuthorizationDeniedException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
+    }
     // Handle Custom Errors
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<String> handleCustomExceptions(CustomException ex) {
@@ -36,7 +48,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String handleOtherExceptions(Exception ex) {
-        return "Exact Error in API: " + ex;
+        return "Exact Error in Movie: " + ex;
     }
 
 }
