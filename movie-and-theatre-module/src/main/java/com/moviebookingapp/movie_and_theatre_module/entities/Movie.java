@@ -1,10 +1,9 @@
 package com.moviebookingapp.movie_and_theatre_module.entities;
 
 import com.moviebookingapp.movie_and_theatre_module.enums.MovieStatus;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,8 +17,12 @@ public class Movie {
     @EmbeddedId
     private MovieAndTheater movieAndTheatre;
 
+    @Min(1)
+    @Column(nullable = false)
     private int ticketsAllotted;
 
+    @NotNull
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private MovieStatus adminOverrideStatus;
 

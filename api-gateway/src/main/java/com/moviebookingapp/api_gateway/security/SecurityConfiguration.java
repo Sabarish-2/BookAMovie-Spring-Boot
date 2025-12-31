@@ -34,11 +34,11 @@ public class SecurityConfiguration {
                 .authenticationEntryPoint((request, response, authException) -> {
                     response.setStatus(401);
                     response.setContentType("application/json");
-                    response.getWriter().write("{\"message\": \"Authentication Required\", \"reason\": " + authException.getMessage() + "}");
+                    response.getWriter().write("{\"message\": \"Authentication Required\", \"reason\": \"" + authException.getMessage() + "\"}");
         })  .accessDeniedHandler((request, response, accessDeniedException) -> {
                     response.setStatus(403);
                     response.setContentType("application/json");
-                    response.getWriter().write("{\"message\": \"You Are Not Supposed To Be Accessing This!!\", \"reason\": " + accessDeniedException.getMessage() + "}");
+                    response.getWriter().write("{\"message\": \"You Are Not Supposed To Be Accessing This!!\", \"reason\": \"" + accessDeniedException.getMessage() + "\"}");
         }));
 
         return httpSecurity.build();
