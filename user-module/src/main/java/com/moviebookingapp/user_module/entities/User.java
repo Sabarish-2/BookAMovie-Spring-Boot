@@ -4,7 +4,7 @@ import com.moviebookingapp.user_module.enums.UserRole;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,21 +20,23 @@ public class User {
     @Id
     private String loginID;
 
-    @NotBlank
+    @Column(nullable = false)
     private String firstName;
 
-    @NotBlank
+    @Column(nullable = false)
     private String lastName;
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String emailID;
 
-    @NotBlank
+    @Column(nullable = false)
     private String password;
 
+    @Min(5999999999L)
+    @Column(nullable = false)
     private long contactNumber;
 
-//    @NotBlank
+    @Column(nullable = false)
     private UserRole userRole;
 
     private String resetToken;

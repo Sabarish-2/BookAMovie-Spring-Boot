@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
+@ApiResponse(responseCode = "401", description = "Authentication Error")
+@ApiResponse(responseCode = "503", description = "Required Tickets Microservice Unreachable")
 @ApiResponse(responseCode = "500", description = "Unexpected Error Internally")
 public interface MovieController {
 

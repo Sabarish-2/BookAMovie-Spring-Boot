@@ -4,12 +4,15 @@ import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Embeddable
 public class MovieAndTheater {
+    @NonNull
     private String movieName;
+    @NonNull
     private String theatreName;
 }
