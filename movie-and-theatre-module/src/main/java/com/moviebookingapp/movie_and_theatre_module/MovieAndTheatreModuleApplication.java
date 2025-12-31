@@ -3,11 +3,11 @@ package com.moviebookingapp.movie_and_theatre_module;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @EnableDiscoveryClient
 @SpringBootApplication
-@EnableAspectJAutoProxy
+@EnableFeignClients
 public class MovieAndTheatreModuleApplication {
 
 	public static void main(String[] args) {

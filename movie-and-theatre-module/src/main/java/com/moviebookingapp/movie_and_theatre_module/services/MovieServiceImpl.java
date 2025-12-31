@@ -1,9 +1,11 @@
 package com.moviebookingapp.movie_and_theatre_module.services;
 
+import com.moviebookingapp.movie_and_theatre_module.Feign.TicketsClient;
 import com.moviebookingapp.movie_and_theatre_module.dtos.MovieDTO;
 import com.moviebookingapp.movie_and_theatre_module.dtos.UpdateMovieDTO;
 import com.moviebookingapp.movie_and_theatre_module.entities.Movie;
 import com.moviebookingapp.movie_and_theatre_module.entities.MovieAndTheater;
+import com.moviebookingapp.movie_and_theatre_module.enums.MovieStatus;
 import com.moviebookingapp.movie_and_theatre_module.exception.MovieAlreadyExistsException;
 import com.moviebookingapp.movie_and_theatre_module.exception.MovieNotFoundException;
 import com.moviebookingapp.movie_and_theatre_module.mappers.MovieMapper;
@@ -20,10 +22,12 @@ public class MovieServiceImpl implements MovieService {
 
     private final MovieRepository movieRepository;
     private final MovieMapper mapper;
+    private final TicketsClient ticketsClient;
 
-    public MovieServiceImpl(MovieRepository movieRepository, MovieMapper mapper) {
+    public MovieServiceImpl(MovieRepository movieRepository, MovieMapper mapper, TicketsClient ticketsClient) {
         this.movieRepository = movieRepository;
         this.mapper = mapper;
+        this.ticketsClient = ticketsClient;
     }
 
     @Override
@@ -44,14 +48,11 @@ public class MovieServiceImpl implements MovieService {
         if (movies.isEmpty()) {
             throw new MovieNotFoundException();
         }
-//        TODO: Add Available Seats and Status (Overridden or Calculate) From Order Service.
-
-        return movies.stream().map(mapper::map).toList();
+        return movies.stream().map(this::addAvailableSeatsAndStatus).toList();
     }
 
     @Override
     public List<MovieDTO> searchMovies(String movieName, String theatreName) {
-//        TODO: Add Available Seats and Status (Overridden or Calculate).
         Specification<Movie> movieSpecification = Specification
                 .where(MovieSpecification.hasMovieName(movieName))
                 .and(MovieSpecification.hasTheatreName(theatreName));
@@ -59,17 +60,35 @@ public class MovieServiceImpl implements MovieService {
         if (movies.isEmpty()) {
             throw new MovieNotFoundException();
         }
+        return movies.stream().map(this::addAvailableSeatsAndStatus).toList();
+    }
 
-        return movies.stream().map(mapper::map).toList();
+    private MovieDTO addAvailableSeatsAndStatus(Movie movie) {
+        MovieDTO movieDTO = mapper.map(movie);
+        Long bookedTickets = ticketsClient.getBookedTickets(movieDTO.getMovieName(), movieDTO.getTheatreName()).getBody();
+        if (bookedTickets == null) {
+            throw new RuntimeException("Feign Client Returned NULL!");
+        }
+        int allottedTickets = movieDTO.getTicketsAllotted();
+        movieDTO.setTicketsAvailable((int) (allottedTickets - bookedTickets));
+        if (movie.getAdminOverrideStatus() != null) {
+            movieDTO.setMovieStatus(movie.getAdminOverrideStatus());
+        } else if (bookedTickets == allottedTickets) {
+            movieDTO.setMovieStatus(MovieStatus.SOLD_OUT);
+        } else if (bookedTickets >= allottedTickets / 2) {
+            movieDTO.setMovieStatus(MovieStatus.BOOK_ASAP);
+        } else {
+            movieDTO.setMovieStatus(MovieStatus.AVAILABLE);
+        }
+        return movieDTO;
     }
 
     @Override
     public MovieDTO getMovieByID(String movieName, String theatreName) {
         Movie movie = movieRepository.findById(new MovieAndTheater(movieName, theatreName))
                 .orElseThrow(() -> new MovieNotFoundException(movieName, theatreName));
-//        TODO: Add Available Seats and Status (Overridden or Calculate).
 
-        return mapper.map(movie);
+        return addAvailableSeatsAndStatus(movie);
     }
 
 
