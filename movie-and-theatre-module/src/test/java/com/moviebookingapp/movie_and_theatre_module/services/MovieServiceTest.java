@@ -59,6 +59,6 @@ public class MovieServiceTest {
     @DisplayName("AllMovies-negative-movieNotFound")
     void test_AllMovies_negative_movieNotFound() {
         when(movieRepository.findAll()).thenReturn(List.of());
-        assertThrows(MovieNotFoundException.class, () -> movieService.getAllMovies());
+        assertThrows(MovieNotFoundException.class, movieService::getAllMovies);
     }
 }
