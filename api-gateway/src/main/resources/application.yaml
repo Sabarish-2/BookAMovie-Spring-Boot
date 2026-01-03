@@ -26,9 +26,42 @@ spring:
                                 - Path=/api/v1.0/moviebooking/*/add, /api/v1.0/moviebooking/tickets/**
                             filters:
                                 - StripPrefix=3
+#                    globalcors:
+#                        cors-configurations:
+#                            '[/**]':
+#                                allowedOrigins: "http://localhost:4200"
+#                                allowedMethods:
+#                                    - GET
+#                                    - POST
+#                                    - PUT
+#                                    - PATCH
+#                                    - DELETE
+#                                allowedHeaders: "*"
+#                                allowedCredentials: true
+#                globalcors:
+#                    cors-configurations:
+#                        '[/**]':
+#                            allowedOrigins: "http://localhost:4200"
+#                            allowedMethods:
+#                                - GET
+#                                - POST
+#                                - PUT
+#                                - PATCH
+#                                - DELETE
+#                            allowedHeaders: "*"
+#                            allowedCredentials: true
 #            globalcors:
-#                cors-security:
+#                cors-configurations:
 #                    '[/**]':
+#                        allowedOrigins: "http://localhost:4200"
+#                        allowedMethods:
+#                            - GET
+#                            - POST
+#                            - PUT
+#                            - PATCH
+#                            - DELETE
+#                        allowedHeaders: "*"
+#                        allowedCredentials: true
 server:
     port: 8090
 
