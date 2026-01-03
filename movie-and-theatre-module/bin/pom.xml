@@ -33,6 +33,31 @@
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
     </properties>
     <dependencies>
+        <!-- JWT Dependencies -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>0.12.6</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>0.12.6</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>0.12.6</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- Security Dependency -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
         <!-- MapStruct Dependency -->
         <dependency>
             <groupId>org.mapstruct</groupId>
@@ -119,11 +144,11 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-restdocs</artifactId>-->
-<!--            <scope>test</scope>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-restdocs</artifactId>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jdbc-test</artifactId>
@@ -149,11 +174,11 @@
             <artifactId>spring-boot-starter-webmvc-test</artifactId>
             <scope>test</scope>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.restdocs</groupId>-->
-<!--            <artifactId>spring-restdocs-mockmvc</artifactId>-->
-<!--            <scope>test</scope>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.springframework.restdocs</groupId>
+            <artifactId>spring-restdocs-mockmvc</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>
@@ -191,31 +216,6 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
-            <!--			<plugin>-->
-            <!--				<groupId>org.asciidoctor</groupId>-->
-            <!--				<artifactId>asciidoctor-maven-plugin</artifactId>-->
-            <!--				<version>2.2.1</version>-->
-            <!--				<executions>-->
-            <!--					<execution>-->
-            <!--						<id>generate-docs</id>-->
-            <!--						<phase>prepare-package</phase>-->
-            <!--						<goals>-->
-            <!--							<goal>process-asciidoc</goal>-->
-            <!--						</goals>-->
-            <!--						<configuration>-->
-            <!--							<backend>html</backend>-->
-            <!--							<doctype>book</doctype>-->
-            <!--						</configuration>-->
-            <!--					</execution>-->
-            <!--				</executions>-->
-            <!--				<dependencies>-->
-            <!--					<dependency>-->
-            <!--						<groupId>org.springframework.restdocs</groupId>-->
-            <!--						<artifactId>spring-restdocs-asciidoctor</artifactId>-->
-            <!--						<version>${spring-restdocs.version}</version>-->
-            <!--					</dependency>-->
-            <!--				</dependencies>-->
-            <!--			</plugin>-->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

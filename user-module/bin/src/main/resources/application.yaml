@@ -3,7 +3,7 @@ spring:
         name: user-module
     datasource:
         driverClassName: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://localhost:3306/Movie_DB?createDatabaseIfNotExist=true
+        url: jdbc:mysql://localhost:3306/User_DB?createDatabaseIfNotExist=true
         username: root
         password: pass@word1
     jpa:
@@ -14,7 +14,7 @@ spring:
     session:
         jdbc:
             initialize-schema: always
-    messages: # Instead of validation Configuration
+    messages: # Use My Properties file: error.property
         basename: error
         encoding: UTF-8
         fallback-to-system-locale: false
@@ -26,8 +26,8 @@ server:
 springdoc:
     openapi:
         info:
-            title: User Module
-            description: REST API Handling User Module
+            title: User REST API Documentation
+            description: This is the REST API Documentation for Handling the User Module
             version: v1.0
     apiDocs:
         enabled: true

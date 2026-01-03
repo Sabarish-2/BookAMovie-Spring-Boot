@@ -46,9 +46,9 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public List<TicketDTO> getTicketsForMovieInTheatre(String movieName, String theatreName) {
         List<Ticket> tickets = ticketRepository.findAllByMovieNameAndTheatreName(movieName, theatreName);
-        if (tickets.isEmpty()) {
-            throw new TicketNotFoundException(movieName, theatreName);
-        }
+//        if (tickets.isEmpty()) {
+//            throw new TicketNotFoundException(movieName, theatreName);
+//        }
         return tickets.stream()
                 .map(mapper::map)
                 .toList();
