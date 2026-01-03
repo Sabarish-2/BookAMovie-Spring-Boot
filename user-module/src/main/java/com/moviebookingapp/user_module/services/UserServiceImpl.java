@@ -2,6 +2,8 @@ package com.moviebookingapp.user_module.services;
 
 import com.moviebookingapp.user_module.dtos.UserDTO;
 import com.moviebookingapp.user_module.entities.User;
+import com.moviebookingapp.user_module.exception.UserAlreadyExistsException;
+import com.moviebookingapp.user_module.exception.UserNotFoundException;
 import com.moviebookingapp.user_module.mappers.UserMapper;
 import com.moviebookingapp.user_module.repositories.UserRepository;
 import com.moviebookingapp.user_module.security.JWTUtil;
@@ -38,7 +40,8 @@ public class UserServiceImpl implements UserService {
     public UserDTO createUser(UserDTO userDTO) {
         User user = mapper.map(userDTO);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-//        TODO: Already exists user chk n exception
+        userRepository.findByEmailIDOrLoginID(userDTO.getEmailID(), userDTO.getLoginID()).orElseThrow(
+                () -> new UserAlreadyExistsException("User With Same Email or Login ID Already exists!!"));
         User createdUser = userRepository.save(user);
         return mapper.map(createdUser);
     }
@@ -55,20 +58,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO retrieveUserByID(String loginID) {
-//        TODO: Not Found Chk n Exception
-        User user = userRepository.findById(loginID).orElseThrow();
+        User user = userRepository.findByEmailIDOrLoginID(loginID, loginID).orElseThrow(() -> new UserNotFoundException(loginID));
         return mapper.map(user);
     }
 
     @Override
     public List<UserDTO> retrieveAllUsers() {
-//        TODO: Not Found Chk n Exception
-        return userRepository.findAll().stream().map(mapper::map).toList();
+        List<UserDTO> users = userRepository.findAll().stream().map(mapper::map).toList();
+        if (users.isEmpty()) {
+            throw new UserNotFoundException();
+        }
+        return users;
     }
 
     @Override
     public void deleteUser(String loginID) {
-//        TODO: Not Found Chk n Exception
+        userRepository.findByEmailIDOrLoginID(loginID, loginID).orElseThrow(() -> new UserNotFoundException(loginID));
         userRepository.deleteById(loginID);
     }
 
