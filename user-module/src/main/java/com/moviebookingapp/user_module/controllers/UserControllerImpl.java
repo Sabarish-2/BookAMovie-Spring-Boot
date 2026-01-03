@@ -29,7 +29,7 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    @GetMapping("/login")
+    @PostMapping("/login")
     public String loginUser(@RequestBody UserLoginDTO userLoginDTO) {
         return userService.loginUser(userLoginDTO.getLoginID(), userLoginDTO.getPassword());
     }
