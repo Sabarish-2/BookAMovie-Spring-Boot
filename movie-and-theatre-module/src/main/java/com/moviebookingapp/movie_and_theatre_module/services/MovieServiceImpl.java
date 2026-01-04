@@ -13,6 +13,7 @@ import com.moviebookingapp.movie_and_theatre_module.exception.MovieNotFoundExcep
 import com.moviebookingapp.movie_and_theatre_module.mappers.MovieMapper;
 import com.moviebookingapp.movie_and_theatre_module.repositories.MovieRepository;
 import com.moviebookingapp.movie_and_theatre_module.specifications.MovieSpecification;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -86,6 +87,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
+    @Cacheable(value = "movie")
     public MovieDTO getMovieByID(String movieName, String theatreName) {
         Movie movie = movieRepository.findById(new MovieAndTheater(movieName, theatreName))
                 .orElseThrow(() -> new MovieNotFoundException(movieName, theatreName));
@@ -119,28 +121,13 @@ public class MovieServiceImpl implements MovieService {
         return addAvailableSeatsAndStatus(movie);
     }
 
-//    @Override
-//    public MovieDTO setStatus(String movieName, String theatreName, MovieStatus movieStatus) {
-//        Movie movie = movieRepository.findById(new MovieAndTheater(movieName, theatreName))
-//                .orElseThrow(() -> new MovieNotFoundException(movieName, theatreName));
-//        if (movieStatus != null
-//                // TODO: && check avl seats for sold out condition
-//        ) {
-
-    /// /            throw new InvalidMovieStatusException("Movie is already Sold Out, Cannot mark as " + movieStatus);
-//        }
-//        movie.setAdminOverrideStatus(movieStatus);
-//        movieRepository.save(movie);
-//        return mapper.map(movie);
-//    }
-
     @Override
     public void deleteMovie(String movieName, String theatreName) {
         Optional<Movie> optionalMovie = movieRepository.findById(new MovieAndTheater(movieName, theatreName));
         if (optionalMovie.isEmpty()) {
             throw new MovieNotFoundException(movieName, theatreName);
         }
-        ticketsClient.deleteTicketsForTicketInTheatre(movieName, theatreName);
+        ticketsClient.deleteTicketsForMovieInTheatre(movieName, theatreName);
         movieRepository.delete(optionalMovie.get());
     }
 }

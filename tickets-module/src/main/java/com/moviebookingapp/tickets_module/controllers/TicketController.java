@@ -42,7 +42,7 @@ public interface TicketController {
             @ApiResponse(responseCode = "200", description = "All Tickets Of Given Movie In Given Theatre Retrieved Successfully"),
             @ApiResponse(responseCode = "404", description = "No Tickets Retrieved")
     })
-    ResponseEntity<List<TicketDTO>> getTicketsForTicketInTheatre(@PathVariable String movieName, @PathVariable String theatreName);
+    ResponseEntity<List<TicketDTO>> getTicketsForMovieInTheatre(@PathVariable String movieName, @PathVariable String theatreName);
 
     @Operation(summary = "Retrieve All Tickets For A User", method = "Ticket Controller")
     @ApiResponses({
@@ -59,11 +59,10 @@ public interface TicketController {
     ResponseEntity<Long> getBookedTickets(@PathVariable String movieName, @PathVariable String theatreName);
 
 
-    @Operation(summary = "Delete An Existing Ticket")
+    @Operation(summary = "Delete All Existing Tickets Of A Movie In Specified Theatre")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Ticket Deleted Successfully"),
+            @ApiResponse(responseCode = "200", description = "Tickets Deleted Successfully"),
             @ApiResponse(responseCode = "404", description = "Ticket Not Found"),
-//            @ApiResponse(responseCode = "400", description = "Validation Error in Ticket Details Provided")
     })
-    ResponseEntity<String> deleteTicketsForTicketInTheatre(@PathVariable String movieName, @PathVariable String theatreName);
+    ResponseEntity<String> deleteTicketsForMovieInTheatre(@PathVariable String movieName, @PathVariable String theatreName);
 }

@@ -42,7 +42,7 @@ public class TicketControllerImpl implements TicketController {
     }
 
     @GetMapping("/tickets/{movieName}/{theatreName}")
-    public ResponseEntity<List<TicketDTO>> getTicketsForTicketInTheatre(String movieName, String theatreName) {
+    public ResponseEntity<List<TicketDTO>> getTicketsForMovieInTheatre(String movieName, String theatreName) {
         return ResponseEntity.ok(ticketService.getTicketsForMovieInTheatre(movieName, theatreName));
     }
 
@@ -60,7 +60,7 @@ public class TicketControllerImpl implements TicketController {
 
     @Override
     @DeleteMapping("/tickets/{movieName}/delete/{theatreName}")
-    public ResponseEntity<String> deleteTicketsForTicketInTheatre(String movieName, String theatreName) {
+    public ResponseEntity<String> deleteTicketsForMovieInTheatre(String movieName, String theatreName) {
         ticketService.deleteTicketsForMovieInTheatre(movieName, theatreName);
         return ResponseEntity.ok("Tickets for Movie: " + movieName + " In " + theatreName + " were Deleted Successfully!");
     }

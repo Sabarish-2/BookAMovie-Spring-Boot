@@ -12,5 +12,5 @@ public interface TicketsClient {
     ResponseEntity<Long> getBookedTickets(@PathVariable String movieName, @PathVariable String theatreName);
 
     @DeleteMapping("/tickets/{movieName}/delete/{theatreName}")
-    ResponseEntity<String> deleteTicketsForTicketInTheatre(@PathVariable String movieName, @PathVariable String theatreName);
+    void deleteTicketsForMovieInTheatre(@PathVariable String movieName, @PathVariable String theatreName);
 }
