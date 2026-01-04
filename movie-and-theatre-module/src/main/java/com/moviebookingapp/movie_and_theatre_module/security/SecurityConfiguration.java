@@ -11,11 +11,23 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * Configuration class for application security.
+ * This class defines the security filter chain and handles authentication and
+ * authorization.
+ */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfiguration {
 
+    /**
+     * Configures the security filter chain for the application.
+     *
+     * @param httpSecurity The HttpSecurity object to configure.
+     * @param jwtFilter    The JWT filter for handling authentication.
+     * @return The configured SecurityFilterChain.
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity, JWTFilter jwtFilter) {
 
@@ -23,18 +35,20 @@ public class SecurityConfiguration {
                 .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/all", "/search").permitAll()
                 .anyRequest().authenticated())
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         httpSecurity.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         httpSecurity.exceptionHandling(ex -> ex.authenticationEntryPoint((request, response, authException) -> {
             response.setStatus(401);
             response.setContentType("application/json");
-            response.getWriter().write("{\"message\": \"Authentication Required\", \"reason\": \"" + authException.getMessage() + "\"}");
+            response.getWriter().write(
+                    "{\"message\": \"Authentication Required\", \"reason\": \"" + authException.getMessage() + "\"}");
         }).accessDeniedHandler((request, response, accessDeniedException) -> {
             response.setStatus(403);
             response.setContentType("application/json");
-            response.getWriter().write("{\"message\": \"You Are Not Supposed To Be Accessing This!!\", \"reason\": \"" + accessDeniedException.getMessage() + "\"}");
+            response.getWriter().write("{\"message\": \"You Are Not Supposed To Be Accessing This!!\", \"reason\": \""
+                    + accessDeniedException.getMessage() + "\"}");
         }));
 
         return httpSecurity.build();
