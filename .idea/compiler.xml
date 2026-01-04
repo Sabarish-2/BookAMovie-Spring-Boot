@@ -10,7 +10,7 @@
         <module name="api-gateway" />
         <module name="eureka-server" />
       </profile>
-      <profile name="Annotation profile for movie-and-theatre-module" enabled="true">
+      <profile name="Annotation profile for tickets-module" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -20,8 +20,8 @@
           <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct-processor/1.6.3/mapstruct-processor-1.6.3.jar" />
         </processorPath>
         <module name="movie-and-theatre-module" />
-        <module name="user-module" />
         <module name="tickets-module" />
+        <module name="user-module" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="21" />

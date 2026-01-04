@@ -13,7 +13,6 @@ import com.moviebookingapp.movie_and_theatre_module.exception.MovieNotFoundExcep
 import com.moviebookingapp.movie_and_theatre_module.mappers.MovieMapper;
 import com.moviebookingapp.movie_and_theatre_module.repositories.MovieRepository;
 import com.moviebookingapp.movie_and_theatre_module.specifications.MovieSpecification;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -87,7 +86,6 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    @Cacheable(value = "movie")
     public MovieDTO getMovieByID(String movieName, String theatreName) {
         Movie movie = movieRepository.findById(new MovieAndTheater(movieName, theatreName))
                 .orElseThrow(() -> new MovieNotFoundException(movieName, theatreName));

@@ -5,6 +5,7 @@ import com.moviebookingapp.tickets_module.entities.Ticket;
 import com.moviebookingapp.tickets_module.exception.TicketNotFoundException;
 import com.moviebookingapp.tickets_module.mappers.TicketMapper;
 import com.moviebookingapp.tickets_module.repositories.TicketRepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,6 +38,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
+    @Cacheable("ticket")
     public TicketDTO getTicketByID(Long ticketID) {
         Ticket ticket = ticketRepository.findById(ticketID)
                 .orElseThrow(() -> new TicketNotFoundException(ticketID));
