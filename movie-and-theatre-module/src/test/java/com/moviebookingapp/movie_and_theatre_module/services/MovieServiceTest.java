@@ -1,8 +1,11 @@
 package com.moviebookingapp.movie_and_theatre_module.services;
 
+import com.moviebookingapp.movie_and_theatre_module.clients.TicketsClient;
 import com.moviebookingapp.movie_and_theatre_module.dtos.MovieDTO;
+import com.moviebookingapp.movie_and_theatre_module.dtos.UpdateMovieDTO;
 import com.moviebookingapp.movie_and_theatre_module.entities.Movie;
 import com.moviebookingapp.movie_and_theatre_module.entities.MovieAndTheater;
+import com.moviebookingapp.movie_and_theatre_module.exception.MovieAlreadyExistsException;
 import com.moviebookingapp.movie_and_theatre_module.exception.MovieNotFoundException;
 import com.moviebookingapp.movie_and_theatre_module.mappers.MovieMapper;
 import com.moviebookingapp.movie_and_theatre_module.repositories.MovieRepository;
@@ -12,11 +15,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -27,6 +35,9 @@ public class MovieServiceTest {
 
     @Mock
     private MovieRepository movieRepository;
+
+    @Mock
+    private TicketsClient ticketsClient;
     @Mock
     private MovieMapper mapper;
 
@@ -48,6 +59,7 @@ public class MovieServiceTest {
     void test_AllMovies_positive() throws MovieNotFoundException {
         when(movieRepository.findAll()).thenReturn(List.of(movie));
         when(mapper.map(movie)).thenReturn(movieDTO);
+        when(ticketsClient.getBookedTickets(any(), any())).thenReturn(ResponseEntity.ok(1L));
 
         List<MovieDTO> expectedList = List.of(movieDTO);
         List<MovieDTO> actualList = movieService.getAllMovies();
@@ -60,5 +72,112 @@ public class MovieServiceTest {
     void test_AllMovies_negative_movieNotFound() {
         when(movieRepository.findAll()).thenReturn(List.of());
         assertThrows(MovieNotFoundException.class, movieService::getAllMovies);
+    }
+
+    @Test
+    @DisplayName("AddMovie-Positive")
+    void test_AddMovie_positive() {
+        when(movieRepository.findById(movieAndTheater)).thenReturn(Optional.empty());
+        when(movieRepository.save(movie)).thenReturn(movie);
+        when(mapper.map(movieDTO)).thenReturn(movie);
+        when(mapper.map(movie)).thenReturn(movieDTO);
+
+        MovieDTO actualMovie = movieService.addMovie(movieDTO);
+
+        assertEquals(movieDTO, actualMovie);
+    }
+
+    @Test
+    @DisplayName("AddMovie-Negative-MovieAlreadyExists")
+    void test_AddMovie_negative_movieAlreadyExists() {
+        when(movieRepository.findById(movieAndTheater)).thenReturn(Optional.of(movie));
+        when(mapper.map(movieDTO)).thenReturn(movie);
+
+        assertThrows(MovieAlreadyExistsException.class, () -> movieService.addMovie(movieDTO));
+    }
+
+    @Test
+    @DisplayName("SearchMovies-Positive")
+    void test_SearchMovies_positive() {
+        when(movieRepository.findAll(any(Specification.class))).thenReturn(List.of(movie));
+        when(mapper.map(movie)).thenReturn(movieDTO);
+        when(ticketsClient.getBookedTickets(any(), any())).thenReturn(ResponseEntity.ok(1L));
+
+        List<MovieDTO> actualMovies = movieService.searchMovies(movieName, theatreName);
+
+        assertEquals(List.of(movieDTO), actualMovies);
+    }
+
+    @Test
+    @DisplayName("SearchMovies-Negative-MovieNotFound")
+    void test_SearchMovies_negative_movieNotFound() {
+        when(movieRepository.findAll(any(Specification.class))).thenReturn(List.of());
+
+        assertThrows(MovieNotFoundException.class, () -> movieService.searchMovies(movieName, theatreName));
+    }
+
+    @Test
+    @DisplayName("GetMovieByID-Positive")
+    void test_GetMovieByID_positive() {
+        when(movieRepository.findById(movieAndTheater)).thenReturn(Optional.of(movie));
+        when(mapper.map(movie)).thenReturn(movieDTO);
+        when(ticketsClient.getBookedTickets(any(), any())).thenReturn(ResponseEntity.ok(1L));
+
+        MovieDTO actualMovie = movieService.getMovieByID(movieName, theatreName);
+
+        assertEquals(movieDTO, actualMovie);
+    }
+
+    @Test
+    @DisplayName("GetMovieByID-Negative-MovieNotFound")
+    void test_GetMovieByID_negative_movieNotFound() {
+        when(movieRepository.findById(movieAndTheater)).thenReturn(Optional.empty());
+
+        assertThrows(MovieNotFoundException.class, () -> movieService.getMovieByID(movieName, theatreName));
+    }
+
+    @Test
+    @DisplayName("UpdateMovie-Positive")
+    void test_UpdateMovie_positive() {
+        UpdateMovieDTO updateMovieDTO = new UpdateMovieDTO();
+        updateMovieDTO.setTicketsAllotted(150);
+
+        when(movieRepository.findById(movieAndTheater)).thenReturn(Optional.of(movie));
+        when(ticketsClient.getBookedTickets(movieName, theatreName)).thenReturn(ResponseEntity.ok(50L));
+        when(mapper.map(movie)).thenReturn(movieDTO);
+
+        MovieDTO actualMovie = movieService.updateMovie(movieName, theatreName, updateMovieDTO);
+
+        assertEquals(movieDTO, actualMovie);
+    }
+
+    @Test
+    @DisplayName("UpdateMovie-Negative-MovieNotFound")
+    void test_UpdateMovie_negative_movieNotFound() {
+        UpdateMovieDTO updateMovieDTO = new UpdateMovieDTO();
+
+        when(movieRepository.findById(movieAndTheater)).thenReturn(Optional.empty());
+
+        assertThrows(MovieNotFoundException.class,
+                () -> movieService.updateMovie(movieName, theatreName, updateMovieDTO));
+    }
+
+    @Test
+    @DisplayName("DeleteMovie-Positive")
+    void test_DeleteMovie_positive() {
+        when(movieRepository.findById(movieAndTheater)).thenReturn(Optional.of(movie));
+
+        movieService.deleteMovie(movieName, theatreName);
+
+        verify(movieRepository).delete(movie);
+        verify(ticketsClient).deleteTicketsForMovieInTheatre(movieName, theatreName);
+    }
+
+    @Test
+    @DisplayName("DeleteMovie-Negative-MovieNotFound")
+    void test_DeleteMovie_negative_movieNotFound() {
+        when(movieRepository.findById(movieAndTheater)).thenReturn(Optional.empty());
+
+        assertThrows(MovieNotFoundException.class, () -> movieService.deleteMovie(movieName, theatreName));
     }
 }
