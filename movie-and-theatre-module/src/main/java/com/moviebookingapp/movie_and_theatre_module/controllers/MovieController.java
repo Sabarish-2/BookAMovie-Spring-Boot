@@ -25,6 +25,13 @@ public interface MovieController {
     })
     ResponseEntity<List<MovieDTO>> viewAllMovies();
 
+    @Operation(summary = "Retrieve Movie By Movie Name and Theatre Name", method = "Movie Controller")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Movie Retrieved Successfully"),
+            @ApiResponse(responseCode = "404", description = "No Movie Found With Given Details")
+    })
+    ResponseEntity<MovieDTO> getMovieByNameAndTheatre(@PathVariable String movieName, @PathVariable String theatreName);
+
     @Operation(summary = "Create A New Movie")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Movie Created Successfully"),
@@ -40,7 +47,7 @@ public interface MovieController {
 //            @ApiResponse(responseCode = "400", description = "Invalid Movie Status Provided"),
             @ApiResponse(responseCode = "404", description = "Movie Not Found")
     })
-    ResponseEntity<MovieDTO> updateMovie(@PathVariable String movieName, @PathVariable String theatreName, UpdateMovieDTO updateMovieDTO) ;
+    ResponseEntity<MovieDTO> updateMovie(@PathVariable String movieName, @PathVariable String theatreName, @RequestBody UpdateMovieDTO updateMovieDTO) ;
 
     @Operation(summary = "Search Movies")
     @ApiResponses({

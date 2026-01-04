@@ -15,7 +15,7 @@ public class LoggingAspect {
 
     @Before("execution (* com.moviebookingapp.*.controllers.*.*(..))")
     public void beforeControllerMethod(JoinPoint joinPoint) {
-        log.info("Executing Method: {}->{}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
+        log.info("Executing Method: {}->{} args {}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(), joinPoint.getArgs());
     }
     @AfterReturning(value = "execution (* com.moviebookingapp.*.controllers.*.*(..))", returning = "result")
     public void afterReturningControllerMethod(JoinPoint joinPoint, Object result) {
@@ -31,7 +31,7 @@ public class LoggingAspect {
     }
     @Before("execution (* com.moviebookingapp.*.services.*.*(..))")
     public void beforeServicesMethod(JoinPoint joinPoint) {
-        log.info("Executing Method: {}->{}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
+        log.info("Executing Method: {}->{} args {}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(), joinPoint.getArgs());
     }
     @AfterReturning(value = "execution (* com.moviebookingapp.*.services.*.*(..))", returning = "result")
     public void afterReturningServicesMethod(JoinPoint joinPoint, Object result) {
@@ -49,7 +49,7 @@ public class LoggingAspect {
 
     @Before("execution (* com.moviebookingapp.*.repositories.*.*(..))")
     public void beforeRepositoriesMethod(JoinPoint joinPoint) {
-        log.info("Executing Method: {}->{}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
+        log.info("Executing Method: {} -> {} args {}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(), joinPoint.getArgs());
     }
     @AfterReturning(value = "execution (* com.moviebookingapp.*.repositories.*.*(..))", returning = "result")
     public void afterReturningRepositoriesMethod(JoinPoint joinPoint, Object result) {
@@ -60,7 +60,7 @@ public class LoggingAspect {
     }
     @AfterThrowing(value = "execution (* com.moviebookingapp.*.repositories.*.*(..))", throwing = "error")
     public void afterThrowingRepositoriesMethod(JoinPoint joinPoint, Exception error) {
-        log.error("Error in Method: {}->{}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
+        log.error("Error in Method: {}->{} args {}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(), joinPoint.getArgs());
         log.error(error.getMessage());
     }
 

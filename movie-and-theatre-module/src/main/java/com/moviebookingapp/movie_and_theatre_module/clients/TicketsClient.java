@@ -1,4 +1,4 @@
-package com.moviebookingapp.movie_and_theatre_module.Feign;
+package com.moviebookingapp.movie_and_theatre_module.clients;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;

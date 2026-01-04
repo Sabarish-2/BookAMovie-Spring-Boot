@@ -7,8 +7,8 @@ import java.util.List;
 public interface UserService {
     UserDTO createUser(UserDTO userDTO);
     String loginUser(String loginInput, String password);
-//    String forgotPassword(String loginInput);
-//    String forgotPasswordCheck(String loginInput, String token);
+    UserDTO forgotPassword(String loginInput);
+    UserDTO forgotPasswordCheck(String loginInput, String token);
     UserDTO retrieveUserByID(String loginID);
     List<UserDTO> retrieveAllUsers();
     void deleteUser(String loginID);

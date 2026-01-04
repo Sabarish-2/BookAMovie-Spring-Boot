@@ -46,9 +46,6 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public List<TicketDTO> getTicketsForMovieInTheatre(String movieName, String theatreName) {
         List<Ticket> tickets = ticketRepository.findAllByMovieNameAndTheatreName(movieName, theatreName);
-//        if (tickets.isEmpty()) {
-//            throw new TicketNotFoundException(movieName, theatreName);
-//        }
         return tickets.stream()
                 .map(mapper::map)
                 .toList();
@@ -66,15 +63,6 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public long getBookedTickets(String movieName, String theatreName) {
         List<TicketDTO> tickets = getTicketsForMovieInTheatre(movieName, theatreName);
-//        List<Integer> bookedTickets = tickets.stream().reduce(ticketDTO -> ticketDTO.getQuantity()).toList();
-//        return bookedTickets.stream().reduce((ticket, ticket2) -> ticket.getQuantity() + ticket2.getQuantity());
-//        return bookedTickets.stream()
-//                .reduce(0, Integer::sum);
-//        return tickets.stream()
-//                .reduce((ticketDTO, ticketDTO2) -> {
-//                    ticketDTO.setQuantity(ticketDTO.getQuantity() + ticketDTO2.getQuantity());
-//                    return ticketDTO;
-//                }).get().getQuantity();
         return tickets.stream()
                 .mapToInt(TicketDTO::getQuantity)
                 .sum();

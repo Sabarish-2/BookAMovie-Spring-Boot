@@ -36,14 +36,14 @@ public class UserControllerImpl implements UserController {
 
     @Override
     @GetMapping("/{loginInput}/forgot")
-    public ResponseEntity<String> forgotPassword(String loginInput) {
-        return null;
+    public ResponseEntity<UserDTO> forgotPassword(String loginInput) {
+        return ResponseEntity.ok(userService.forgotPassword(loginInput));
     }
 
     @Override
     @PostMapping("/{loginInput}/forgot")
-    public ResponseEntity<String> forgotPasswordVerify(String loginInput, UserResetDTO userResetDTO) {
-        return null;
+    public ResponseEntity<UserDTO> forgotPasswordVerify(String loginInput, UserResetDTO userResetDTO) {
+        return ResponseEntity.ok(userService.forgotPasswordCheck(loginInput, userResetDTO.getPassword()));
     }
 
     @Override

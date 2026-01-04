@@ -29,6 +29,12 @@ public class MovieControllerImpl implements MovieController {
     }
 
     @Override
+    @GetMapping("/{movieName}/{theatreName}")
+    public ResponseEntity<MovieDTO> getMovieByNameAndTheatre(String movieName, String theatreName) {
+        return new ResponseEntity<>(movieService.getMovieByID(movieName, theatreName), HttpStatus.OK);
+    }
+
+    @Override
     @PostMapping("create")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<MovieDTO> createMovie(MovieDTO movieDTO) {

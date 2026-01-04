@@ -1,6 +1,6 @@
 package com.moviebookingapp.movie_and_theatre_module.services;
 
-import com.moviebookingapp.movie_and_theatre_module.Feign.TicketsClient;
+import com.moviebookingapp.movie_and_theatre_module.clients.TicketsClient;
 import com.moviebookingapp.movie_and_theatre_module.dtos.MovieDTO;
 import com.moviebookingapp.movie_and_theatre_module.dtos.UpdateMovieDTO;
 import com.moviebookingapp.movie_and_theatre_module.entities.Movie;
@@ -69,7 +69,7 @@ public class MovieServiceImpl implements MovieService {
         MovieDTO movieDTO = mapper.map(movie);
         Long bookedTickets = ticketsClient.getBookedTickets(movieDTO.getMovieName(), movieDTO.getTheatreName()).getBody();
         if (bookedTickets == null) {
-            throw new RuntimeException("Feign Client Returned NULL!");
+            throw new RuntimeException("clients Client Returned NULL!");
         }
         int allottedTickets = movieDTO.getTicketsAllotted();
         movieDTO.setTicketsAvailable((int) (allottedTickets - bookedTickets));
@@ -100,22 +100,23 @@ public class MovieServiceImpl implements MovieService {
                 .orElseThrow(() -> new MovieNotFoundException(movieName, theatreName));
         Long ticketsBooked = ticketsClient.getBookedTickets(movieName, theatreName).getBody();
         if (ticketsBooked == null) {
-            throw new RuntimeException("Feign Client Returned NULL!");
+            throw new RuntimeException("clients Client Returned NULL!");
         }
         if (updateMovieDTO.getTicketsAllotted() != null) {
             if (updateMovieDTO.getTicketsAllotted() < ticketsBooked) {
                 throw new IncorrectTicketsAllottedException("Tickets Allotted cannot be less than Tickets Booked!");
             }
             movie.setTicketsAllotted(updateMovieDTO.getTicketsAllotted());
-        }
-        if (updateMovieDTO.getAdminOverrideStatus() != null) {
+        } else if (updateMovieDTO.getAdminOverrideStatus() != null) {
             if (ticketsBooked == movie.getTicketsAllotted()) {
                 throw new InvalidMovieStatusException("Movie is already Sold Out, Cannot mark " + movieName + " at " + theatreName + " as " + updateMovieDTO.getAdminOverrideStatus());
             }
-            movie.setAdminOverrideStatus(updateMovieDTO.getAdminOverrideStatus());   // Should we?
+            movie.setAdminOverrideStatus(updateMovieDTO.getAdminOverrideStatus());
+        } else {
+            movie.setAdminOverrideStatus(null);
         }
         movieRepository.save(movie);
-        return mapper.map(movie);
+        return addAvailableSeatsAndStatus(movie);
     }
 
 //    @Override

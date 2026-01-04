@@ -42,7 +42,7 @@ public interface UserController {
             @ApiResponse(responseCode = "400", description = "Validation Error in User Details Provided"),
             @ApiResponse(responseCode = "404", description = "User Does Not Exists")
     })
-    ResponseEntity<String> forgotPassword(@PathVariable String loginInput);
+    ResponseEntity<UserDTO> forgotPassword(@PathVariable String loginInput);
 
     @Operation(summary = "Reset Password After Verification")
     @ApiResponses({
@@ -50,7 +50,7 @@ public interface UserController {
             @ApiResponse(responseCode = "400", description = "Validation Error in User Details Provided"),
             @ApiResponse(responseCode = "404", description = "User Does Not Exists")
     })
-    ResponseEntity<String> forgotPasswordVerify(@PathVariable String loginInput, @RequestBody UserResetDTO userResetDTO);
+    ResponseEntity<UserDTO> forgotPasswordVerify(@PathVariable String loginInput, @RequestBody UserResetDTO userResetDTO);
 
     @Operation(summary = "Retrieve All Users", method = "User Controller")
     @ApiResponses({

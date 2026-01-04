@@ -10,7 +10,5 @@ public class UpdateMovieDTO {
 
     private Integer ticketsAllotted;
 
-//    private Integer ticketsAvailable;
-
     private MovieStatus adminOverrideStatus;
 }

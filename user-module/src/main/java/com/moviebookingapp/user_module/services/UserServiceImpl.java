@@ -57,6 +57,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDTO forgotPassword(String loginInput) {
+        return retrieveUserByID(loginInput);
+    }
+
+    @Override
+    public UserDTO forgotPasswordCheck(String loginInput, String password) {
+        UserDTO userDTO = retrieveUserByID(loginInput);
+        User user = mapper.map(userDTO);
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
+        return mapper.map(user);
+    }
+
+    @Override
     public UserDTO retrieveUserByID(String loginID) {
         User user = userRepository.findByEmailIDOrLoginID(loginID, loginID).orElseThrow(() -> new UserNotFoundException(loginID));
         return mapper.map(user);
