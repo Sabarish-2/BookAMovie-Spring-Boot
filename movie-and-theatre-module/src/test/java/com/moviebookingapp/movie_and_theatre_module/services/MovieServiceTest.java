@@ -5,6 +5,9 @@ import com.moviebookingapp.movie_and_theatre_module.dtos.MovieDTO;
 import com.moviebookingapp.movie_and_theatre_module.dtos.UpdateMovieDTO;
 import com.moviebookingapp.movie_and_theatre_module.entities.Movie;
 import com.moviebookingapp.movie_and_theatre_module.entities.MovieAndTheater;
+import com.moviebookingapp.movie_and_theatre_module.enums.MovieStatus;
+import com.moviebookingapp.movie_and_theatre_module.exception.IncorrectTicketsAllottedException;
+import com.moviebookingapp.movie_and_theatre_module.exception.InvalidMovieStatusException;
 import com.moviebookingapp.movie_and_theatre_module.exception.MovieAlreadyExistsException;
 import com.moviebookingapp.movie_and_theatre_module.exception.MovieNotFoundException;
 import com.moviebookingapp.movie_and_theatre_module.mappers.MovieMapper;
@@ -28,7 +31,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class MovieServiceTest {
+class MovieServiceTest {
 
     @InjectMocks
     private MovieServiceImpl movieService;
@@ -137,13 +140,52 @@ public class MovieServiceTest {
     }
 
     @Test
-    @DisplayName("UpdateMovie-Positive")
-    void test_UpdateMovie_positive() {
+    @DisplayName("GetMovieByID-Negative-FeignRuntimeInPrivateMethod")
+    void test_GetMovieByID_negative_feignRuntimeInPrivateMethod() {
+        when(movieRepository.findById(movieAndTheater)).thenReturn(Optional.of(movie));
+        when(mapper.map(movie)).thenReturn(movieDTO);
+        when(ticketsClient.getBookedTickets(movieName, theatreName)).thenReturn(null);
+
+        assertThrows(RuntimeException.class, () -> movieService.getMovieByID(movieName, theatreName));
+    }
+
+    @Test
+    @DisplayName("UpdateMovie-Positive-TicketsAllotted")
+    void test_UpdateMovie_positive_ticketsAllotted() {
         UpdateMovieDTO updateMovieDTO = new UpdateMovieDTO();
         updateMovieDTO.setTicketsAllotted(150);
 
         when(movieRepository.findById(movieAndTheater)).thenReturn(Optional.of(movie));
         when(ticketsClient.getBookedTickets(movieName, theatreName)).thenReturn(ResponseEntity.ok(50L));
+        when(mapper.map(movie)).thenReturn(movieDTO);
+
+        MovieDTO actualMovie = movieService.updateMovie(movieName, theatreName, updateMovieDTO);
+
+        assertEquals(movieDTO, actualMovie);
+    }
+
+    @Test
+    @DisplayName("UpdateMovie-Positive-StatusOverride")
+    void test_UpdateMovie_positive_statusOverride() {
+        UpdateMovieDTO updateMovieDTO = new UpdateMovieDTO();
+        updateMovieDTO.setAdminOverrideStatus(MovieStatus.SOLD_OUT);
+
+        when(movieRepository.findById(movieAndTheater)).thenReturn(Optional.of(movie));
+        when(ticketsClient.getBookedTickets(movieName, theatreName)).thenReturn(ResponseEntity.ok(50L));
+        when(mapper.map(movie)).thenReturn(movieDTO);
+
+        MovieDTO actualMovie = movieService.updateMovie(movieName, theatreName, updateMovieDTO);
+
+        assertEquals(movieDTO, actualMovie);
+    }
+
+    @Test
+    @DisplayName("UpdateMovie-Positive-NullInDTO")
+    void test_UpdateMovie_positive_nullInDTO() {
+        UpdateMovieDTO updateMovieDTO = new UpdateMovieDTO();
+
+        when(movieRepository.findById(movieAndTheater)).thenReturn(Optional.of(movie));
+        when(ticketsClient.getBookedTickets(movieName, theatreName)).thenReturn(ResponseEntity.ok((long)ticketsAllotted));
         when(mapper.map(movie)).thenReturn(movieDTO);
 
         MovieDTO actualMovie = movieService.updateMovie(movieName, theatreName, updateMovieDTO);
@@ -160,6 +202,40 @@ public class MovieServiceTest {
 
         assertThrows(MovieNotFoundException.class,
                 () -> movieService.updateMovie(movieName, theatreName, updateMovieDTO));
+    }
+
+    @Test
+    @DisplayName("UpdateMovie-Negative-FeignRuntime")
+    void test_UpdateMovie_negative_feignRuntime() {
+        UpdateMovieDTO updateMovieDTO = new UpdateMovieDTO();
+        when(movieRepository.findById(movieAndTheater)).thenReturn(Optional.of(movie));
+        when(ticketsClient.getBookedTickets(movieName, theatreName)).thenReturn(null);
+        assertThrows(RuntimeException.class, () -> movieService.updateMovie(movieName, theatreName, updateMovieDTO));
+
+    }
+
+    @Test
+    @DisplayName("UpdateMovie-Positive-ErrorInTicketsAllotted")
+    void test_UpdateMovie_positive_errorInTicketsAllotted() {
+        UpdateMovieDTO updateMovieDTO = new UpdateMovieDTO();
+        updateMovieDTO.setTicketsAllotted(2);
+
+        when(movieRepository.findById(movieAndTheater)).thenReturn(Optional.of(movie));
+        when(ticketsClient.getBookedTickets(movieName, theatreName)).thenReturn(ResponseEntity.ok(50L));
+
+        assertThrows(IncorrectTicketsAllottedException.class, () -> movieService.updateMovie(movieName, theatreName, updateMovieDTO));
+    }
+
+    @Test
+    @DisplayName("UpdateMovie-Positive-ErrorInStatusOverride")
+    void test_UpdateMovie_positive_errorInStatusOverride() {
+        UpdateMovieDTO updateMovieDTO = new UpdateMovieDTO();
+        updateMovieDTO.setAdminOverrideStatus(MovieStatus.AVAILABLE);
+
+        when(movieRepository.findById(movieAndTheater)).thenReturn(Optional.of(movie));
+        when(ticketsClient.getBookedTickets(movieName, theatreName)).thenReturn(ResponseEntity.ok((long)ticketsAllotted));
+
+        assertThrows(InvalidMovieStatusException.class, () -> movieService.updateMovie(movieName, theatreName, updateMovieDTO));
     }
 
     @Test

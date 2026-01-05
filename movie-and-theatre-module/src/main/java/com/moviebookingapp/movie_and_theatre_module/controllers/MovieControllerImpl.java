@@ -55,7 +55,7 @@ public class MovieControllerImpl implements MovieController {
      */
     @Override
     @GetMapping("/{movieName}/{theatreName}")
-    public ResponseEntity<MovieDTO> getMovieByNameAndTheatre(String movieName, String theatreName) {
+    public ResponseEntity<MovieDTO> getMovieByNameAndTheatre(@PathVariable String movieName,@PathVariable  String theatreName) {
         return new ResponseEntity<>(movieService.getMovieByID(movieName, theatreName), HttpStatus.OK);
     }
 
@@ -83,7 +83,7 @@ public class MovieControllerImpl implements MovieController {
     @Override
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("{movieName}/update/{theatreName}")
-    public ResponseEntity<MovieDTO> updateMovie(String movieName, String theatreName, UpdateMovieDTO updateMovieDTO) {
+    public ResponseEntity<MovieDTO> updateMovie(@PathVariable String movieName,@PathVariable  String theatreName, UpdateMovieDTO updateMovieDTO) {
         return ResponseEntity.ok(movieService.updateMovie(movieName, theatreName, updateMovieDTO));
     }
 
@@ -110,7 +110,7 @@ public class MovieControllerImpl implements MovieController {
     @Override
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("{movieName}/delete/{theatreName}")
-    public ResponseEntity<String> deleteMovie(String movieName, String theatreName) {
+    public ResponseEntity<String> deleteMovie(@PathVariable String movieName,@PathVariable String theatreName) {
         movieService.deleteMovie(movieName, theatreName);
         return ResponseEntity.ok("Movie " + movieName + " At " + theatreName + " Deleted Successfully!");
     }

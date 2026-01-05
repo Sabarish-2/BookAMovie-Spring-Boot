@@ -165,7 +165,7 @@ public class MovieServiceImpl implements MovieService {
                 .orElseThrow(() -> new MovieNotFoundException(movieName, theatreName));
         Long ticketsBooked = ticketsClient.getBookedTickets(movieName, theatreName).getBody();
         if (ticketsBooked == null) {
-            throw new RuntimeException("clients Client Returned NULL!");
+            throw new RuntimeException("Feign Client Returned NULL!");
         }
         if (updateMovieDTO.getTicketsAllotted() != null) {
             if (updateMovieDTO.getTicketsAllotted() < ticketsBooked) {

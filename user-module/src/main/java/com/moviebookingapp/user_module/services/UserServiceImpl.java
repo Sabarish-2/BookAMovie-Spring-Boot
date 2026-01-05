@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
      *                              tokens.
      */
     public UserServiceImpl(UserRepository userRepository, UserMapper mapper, PasswordEncoder passwordEncoder,
-            AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
+                           AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
         this.userRepository = userRepository;
         this.mapper = mapper;
         this.passwordEncoder = passwordEncoder;
@@ -79,8 +79,9 @@ public class UserServiceImpl implements UserService {
     public UserDTO createUser(UserDTO userDTO) {
         User user = mapper.map(userDTO);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.findByEmailIDOrLoginID(userDTO.getEmailID(), userDTO.getLoginID()).orElseThrow(
-                () -> new UserAlreadyExistsException("User With Same Email or Login ID Already exists!!"));
+        if (userRepository.findByEmailIDOrLoginID(userDTO.getEmailID(), userDTO.getLoginID()).isPresent()) {
+            throw new UserAlreadyExistsException("User With Same Email or Login ID Already exists!!");
+        }
         User createdUser = userRepository.save(user);
         return mapper.map(createdUser);
     }
