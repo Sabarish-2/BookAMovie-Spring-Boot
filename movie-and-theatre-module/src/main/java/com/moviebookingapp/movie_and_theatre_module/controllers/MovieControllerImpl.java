@@ -54,8 +54,8 @@ public class MovieControllerImpl implements MovieController {
      * @return A response entity containing the movie details.
      */
     @Override
-    @GetMapping("/{movieName}/{theatreName}")
-    public ResponseEntity<MovieDTO> getMovieByNameAndTheatre(@PathVariable String movieName,@PathVariable  String theatreName) {
+    @GetMapping("/{movieName:^(?!swagger-ui|v3|api-docs).*}/{theatreName}")
+    public ResponseEntity<MovieDTO> getMovieByNameAndTheatre(@PathVariable("movieName") String movieName,@PathVariable  String theatreName) {
         return new ResponseEntity<>(movieService.getMovieByID(movieName, theatreName), HttpStatus.OK);
     }
 
