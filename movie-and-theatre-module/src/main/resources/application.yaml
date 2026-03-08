@@ -26,6 +26,10 @@ eureka:
     instance: 
         prefer-ip-address: false
         hostname: ${HOSTNAME}
+        secure-port-enabled: true
+        secure-port: 443
+        non-secure-port-enabled: false
+
     client:
         serviceUrl:
             defaultZone: https://bookamovie-spring-boot-eureka-server-fe3s.onrender.com/eureka
@@ -42,3 +46,9 @@ springdoc:
     swaggerUi:
         enabled: true
 #        path: /swagger-ui.html
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
