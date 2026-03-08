@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="All MS" type="CompoundRunConfigurationType">
+    <toRun name="1.Eureka Server" type="Application" />
+    <toRun name="2.API Gateway" type="Application" />
+    <toRun name="4.MovieAndTheatreModuleApplication" type="Application" />
+    <toRun name="5.TicketsModuleApplication" type="Application" />
+    <toRun name="3.UserModule" type="Application" />
+    <method v="2" />
+  </configuration>
+</component>
