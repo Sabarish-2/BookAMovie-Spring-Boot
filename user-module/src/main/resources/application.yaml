@@ -2,11 +2,12 @@ spring:
     application:
         name: user-module
     datasource:
-        driverClassName: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://localhost:3306/Users_DB?createDatabaseIfNotExist=true
-        username: root
-        password: root
+        url: ${DB_URL}
+        username: ${DB_USER}
+        password: ${DB_PASS}
+        driverClassName: org.postgresql.Driver
     jpa:
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
         #        database-platform: org.hibernate.dialect.MySQL8Dialect
         hibernate:
             ddl-auto: update # Automatically updates the database schema based on entities
@@ -42,7 +43,7 @@ springdoc:
     swaggerUi:
         enabled: true
 
-#eureka:
-#    client:
-#        service_url:
-#            defaultZone: http://localhost:8761/eureka
+eureka:
+   client:
+       service_url:
+            defaultZone: https://bookamovie-spring-boot-eureka-server-fe3s.onrender.com/eureka
