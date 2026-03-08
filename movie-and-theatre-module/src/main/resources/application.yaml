@@ -23,6 +23,9 @@ spring:
         fallback-to-system-locale: false
 
 eureka:
+    instance: 
+        prefer-ip-address: false
+        hostname: ${HOSTNAME}
     client:
         serviceUrl:
             defaultZone: https://bookamovie-spring-boot-eureka-server-fe3s.onrender.com/eureka

@@ -44,6 +44,9 @@ springdoc:
         enabled: true
 
 eureka:
-   client:
+    instance: 
+        prefer-ip-address: false
+        hostname: ${HOSTNAME}
+    client:
        service_url:
             defaultZone: https://bookamovie-spring-boot-eureka-server-fe3s.onrender.com/eureka

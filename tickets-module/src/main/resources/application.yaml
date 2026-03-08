@@ -37,6 +37,9 @@ springdoc:
 #        path: /swagger-ui.html
 
 eureka:
+  instance: 
+      prefer-ip-address: false
+      hostname: ${HOSTNAME}
   client:
     serviceUrl:
             defaultZone: https://bookamovie-spring-boot-eureka-server-fe3s.onrender.com/eureka
