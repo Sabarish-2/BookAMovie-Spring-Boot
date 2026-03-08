@@ -8,9 +8,9 @@ spring:
     driverClassName: org.postgresql.Driver
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-  hibernate:
-    ddl-auto: update # Automatically updates the database schema based on entities
-  show-sql: true # Logs SQL queries to the console
+    hibernate:
+      ddl-auto: update # Automatically updates the database schema based on entities
+    show-sql: true # Logs SQL queries to the console
   session:
     jdbc:
       initialize-schema: always
