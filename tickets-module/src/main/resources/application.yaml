@@ -47,3 +47,10 @@ eureka:
   client:
     serviceUrl:
             defaultZone: https://bookamovie-spring-boot-eureka-server-fe3s.onrender.com/eureka
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
