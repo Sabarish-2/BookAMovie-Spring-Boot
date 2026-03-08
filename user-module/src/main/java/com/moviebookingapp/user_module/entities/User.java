@@ -2,6 +2,7 @@ package com.moviebookingapp.user_module.entities;
 
 import com.moviebookingapp.user_module.enums.UserRole;
 import jakarta.persistence.Column;
+import jakarta.persistence.Table;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.Min;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name="users")
 public class User {
 
     @Id
