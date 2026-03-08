@@ -25,7 +25,7 @@ spring:
 eureka:
     client:
         serviceUrl:
-            defaultZone: http://localhost:8761/eureka
+            defaultZone: https://bookamovie-spring-boot-eureka-server-fe3s.onrender.com/eureka
 
 springdoc:
     openapi:
