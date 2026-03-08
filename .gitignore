@@ -1,0 +1,66 @@
+# Java
+*.class
+*.jar
+*.war
+*.ear
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+
+# Gradle
+build/
+.gradle/
+!gradle/wrapper/gradle-wrapper.jar
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# Eclipse
+.project
+.classpath
+.settings/
+bin/
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Test reports
+test-output/
+surefire-reports/
+jacoco.exec
+
+# Spring Boot
+spring-boot-devtools.properties
+
+# Misc
+.env
+*.swp
+*.swo
+
+# Docker
+*.pid
+docker-compose.override.yml
+
+# Node (if using frontend)
+node_modules/
+npm-debug.log
+
+# Ignore local files for each microservice
+**/target/
+**/build/

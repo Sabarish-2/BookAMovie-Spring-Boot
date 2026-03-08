@@ -1,0 +1,40 @@
+package com.moviebookingapp.user_module.handler;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.List;
+
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+
+    // Handle Validation Errors
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public List<String> handleValidation(MethodArgumentNotValidException ex) {
+        return ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(f -> f.getField() + ": " + f.getDefaultMessage())
+                .toList();
+    }
+
+    // Handle Custom Errors
+//    @ExceptionHandler(CustomException.class)
+//    public ResponseEntity<String> handleCustomExceptions(CustomException ex) {
+//        return new ResponseEntity<>(ex.getMessage(), ex.getStatus());
+//    }
+
+    // Handle All other Errors
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public String handleOtherExceptions(Exception ex) {
+        return "Exact Error in User: " + ex;
+    }
+
+}
+

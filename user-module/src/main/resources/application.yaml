@@ -1,0 +1,48 @@
+spring:
+    application:
+        name: user-module
+    datasource:
+        driverClassName: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/Users_DB?createDatabaseIfNotExist=true
+        username: root
+        password: root
+    jpa:
+        #        database-platform: org.hibernate.dialect.MySQL8Dialect
+        hibernate:
+            ddl-auto: update # Automatically updates the database schema based on entities
+        show-sql: true # Logs SQL queries to the console
+    session:
+        jdbc:
+            initialize-schema: always
+    messages: # Use My Properties file: error.property
+        basename: error
+        encoding: UTF-8
+        fallback-to-system-locale: false
+
+logging:
+    level:
+        # Log the SQL statements
+#        root: DEBUG
+        org:
+            hibernate:
+#                SQL: DEBUG
+        # Log the binding parameters (TRACE level provides more detail than DEBUG)
+#        org.hibernate.orm.jdbc.bind: TRACE
+server:
+    port: 8081
+
+springdoc:
+    openapi:
+        info:
+            title: User REST API Documentation
+            description: This is the REST API Documentation for Handling the User Module
+            version: v1.0
+    apiDocs:
+        enabled: true
+    swaggerUi:
+        enabled: true
+
+#eureka:
+#    client:
+#        service_url:
+#            defaultZone: http://localhost:8761/eureka
