@@ -25,7 +25,7 @@ spring:
                             filters:
                                 - StripPrefix=3
 server:
-    port: 8090
+    port: ${PORT:8090}
 
 management:
     endpoints:
