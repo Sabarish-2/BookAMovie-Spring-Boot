@@ -47,6 +47,17 @@ eureka:
     instance: 
         prefer-ip-address: false
         hostname: ${HOSTNAME}
+
+        secure-port-enabled: true
+        secure-port: 443
+        non-secure-port-enabled: false
+        
     client:
        service_url:
             defaultZone: https://bookamovie-spring-boot-eureka-server-fe3s.onrender.com/eureka
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
