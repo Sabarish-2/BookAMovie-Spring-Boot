@@ -10,7 +10,7 @@ import java.util.concurrent.CompletableFuture;
 @Component
 public class HealthScheduler {
 
-    public volatile long lastActivity = System.currentTimeMillis();
+    public static volatile long lastActivity = System.currentTimeMillis();
 
     private final RestTemplate restTemplate = new RestTemplate();
 
@@ -19,7 +19,7 @@ public class HealthScheduler {
         "https://bookamovie-spring-boot-user-service.onrender.com",
         "https://bookamovie-spring-boot-tickets-service.onrender.com",
         "https://bookamovie-spring-boot-movie-service-5c8d.onrender.com",
-"https://bookamovie-spring-boot-api-gateway-2psv.onrender.com"
+"https://bookamovie-spring-boot-api-gateway-2psv.onrender.com/render"
     );
 
     @Scheduled(initialDelay = 0, fixedRate = 300000)

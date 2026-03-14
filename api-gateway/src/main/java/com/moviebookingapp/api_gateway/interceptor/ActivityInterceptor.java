@@ -14,8 +14,10 @@ public class ActivityInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        // Update on every API call
-        HealthScheduler.lastActivity = System.currentTimeMillis();
+        // Update on every API call other than scheduler
+        if (!request.getRequestURI().equals("/render")) {
+    HealthScheduler.lastActivity = System.currentTimeMillis();
+}
 
         return true; // true = continue processing the request
     }
