@@ -29,6 +29,7 @@ public class HealthScheduler {
 
         System.out.println("Schedulre Start: \nDIFF - " + diff / 6000);
         if (diff < 1800000) {
+for (int freq = 0; freq < 7; ++freq) {
             for (String url: services) {
                 CompletableFuture.runAsync(() -> {
                     try {
@@ -43,7 +44,7 @@ public class HealthScheduler {
     }
 }
                 });
-            }
+            }}
         }
     }
 }
