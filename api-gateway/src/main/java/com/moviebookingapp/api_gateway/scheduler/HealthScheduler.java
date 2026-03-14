@@ -15,10 +15,10 @@ public class HealthScheduler {
     private final RestTemplate restTemplate = new RestTemplate();
 
     private final List<String> services = List.of(
-        "https://bookamovie-spring-boot-eureka-server-fe3s.onrender.com",
-        "https://bookamovie-spring-boot-user-service.onrender.com",
-        "https://bookamovie-spring-boot-tickets-service.onrender.com",
-        "https://bookamovie-spring-boot-movie-service-5c8d.onrender.com",
+        "https://bookamovie-spring-boot-eureka-server-fe3s.onrender.com/render",
+        "https://bookamovie-spring-boot-user-service.onrender.com/render",
+        "https://bookamovie-spring-boot-tickets-service.onrender.com/render",
+        "https://bookamovie-spring-boot-movie-service-5c8d.onrender.com/render",
 "https://bookamovie-spring-boot-api-gateway-2psv.onrender.com/render"
     );
 
@@ -27,15 +27,20 @@ public class HealthScheduler {
         long now = System.currentTimeMillis();
         long diff = now - lastActivity;
 
-        System.out.println("Schedulre Start: \nDIFF - - " + diff);
+        System.out.println("Schedulre Start: \nDIFF - " + diff / 6000);
         if (diff < 1800000) {
             for (String url: services) {
                 CompletableFuture.runAsync(() -> {
                     try {
                         restTemplate.getForObject(url, String.class);
                         System.out.println("Sucess? for url - " + url);
-                    } catch (Exception ex) {
-                        System.out.println("Error UrL - " + url + " Err is - " +  ex.getMessage());
+                    } catch (Exception e) {
+                        String msg = e.getMessage();
+    if (msg != null) {
+        // Safe truncation to 250 characters
+        String truncatedMsg = msg.substring(0, Math.min(msg.length(), 250));
+        System.out.println(truncatedMsg);
+    }
 }
                 });
             }
