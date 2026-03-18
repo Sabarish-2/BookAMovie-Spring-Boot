@@ -34,12 +34,12 @@ management:
                 include: "*"
 eureka:
     instance: 
-        prefer-ip-address: false
-        hostname: ${HOSTNAME}
+        # prefer-ip-address: false
+        # hostname: ${HOSTNAME}
         secure-port-enabled: true
         secure-port: 443
         non-secure-port-enabled: false
 
     client:
         serviceUrl:
-            defaultZone: https://bookamovie-spring-boot-eureka-server-fe3s.onrender.com/eureka
+            defaultZone: ${EUREKA_URL:http://localhost:8761/eureka}
