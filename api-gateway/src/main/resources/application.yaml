@@ -34,8 +34,8 @@ management:
                 include: "*"
 eureka:
     instance: 
-        # prefer-ip-address: false
-        # hostname: ${HOSTNAME}
+        prefer-ip-address: false
+        hostname: ${HOSTNAME}
         secure-port-enabled: true
         secure-port: 443
         non-secure-port-enabled: false
