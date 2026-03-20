@@ -1,7 +1,8 @@
 package com.moviebookingapp.movie_and_theatre_module.specifications;
 
-import com.moviebookingapp.movie_and_theatre_module.entities.Movie;
 import org.springframework.data.jpa.domain.Specification;
+
+import com.moviebookingapp.movie_and_theatre_module.entities.Movie;
 
 /**
  * Specification class for querying movies based on dynamic criteria.
@@ -20,7 +21,7 @@ public class MovieSpecification {
         return (root, query, cb) -> {
             if (movieName == null || movieName.isBlank())
                 return null;
-            return cb.like(root.get("movieAndTheatre").get("movieName"), movieName + "%");
+            return cb.like(cb.lower(root.get("movieAndTheatre").get("movieName")), movieName.toLowerCase() + "%");
         };
     }
 
@@ -34,7 +35,7 @@ public class MovieSpecification {
         return (root, query, cb) -> {
             if (theatreName == null || theatreName.isBlank())
                 return null;
-            return cb.like(root.get("movieAndTheatre").get("theatreName"), theatreName + "%");
+            return cb.like(cb.lower(root.get("movieAndTheatre").get("theatreName")), theatreName.toLowerCase() + "%");
         };
     }
 }
