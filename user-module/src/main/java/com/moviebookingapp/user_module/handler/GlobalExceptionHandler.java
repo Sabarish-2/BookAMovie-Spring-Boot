@@ -1,12 +1,13 @@
 package com.moviebookingapp.user_module.handler;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import java.util.List;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -21,6 +22,13 @@ public class GlobalExceptionHandler {
                 .stream()
                 .map(f -> f.getField() + ": " + f.getDefaultMessage())
                 .toList();
+    }
+
+    // Handle Bad Credentials Errors
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(BadCredentialsException.class)
+    public String handleBadCredentials(BadCredentialsException ex) {
+        return "Invalid ID or Password";
     }
 
     // Handle Custom Errors
